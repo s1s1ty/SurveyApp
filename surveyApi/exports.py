@@ -3,15 +3,17 @@ import xlwt
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+
 from .models import Project, Question, Answer
 
 
+# DOWNLOAD ANSWER AS XLS FORMAT
 def export_answer_xls(request, pk):
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename="answers.xls"'
 
 	wb = xlwt.Workbook(encoding='utf-8')
-	ws = wb.add_sheet("sheet1")
+	ws = wb.add_sheet("sheet1", cell_overwrite_ok=True)
 
 	row_num = 0
 
@@ -31,18 +33,17 @@ def export_answer_xls(request, pk):
 
 	font_style = xlwt.XFStyle()
 	font_style.alignment.wrap = 1
-
+	col_num = 0
 	for question in questions:
 		answers = question.answer_set.all()
-		row_num += 1
-		for ans in answers:
-			columns.append(ans.answer_text)
-		import pdb; pdb.set_trace()
+		row_num = 1
+		row = [ans.answer_text for ans in answers]
 
-		for col_num in xrange(len(columns)):
-			ws.write(row_num, col_num, columns[col_num], font_style)
+		for index in xrange(len(row)):
+			ws.write(row_num, col_num, row[index], font_style)
+			row_num+=1
+		col_num+=1
 
-	# data = get_data()
 	wb.save(response)
 	return response
 
