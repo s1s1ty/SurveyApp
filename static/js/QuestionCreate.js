@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import SuccessNotification from "./SuccessNotification";
 
 // CREATE AND UPDATE QUESTION
 class QuestionCreate extends React.Component {
@@ -13,7 +14,7 @@ class QuestionCreate extends React.Component {
 			project: '',
 			status: 'new',
 			question_id: '',
-
+			isNotification: ''
 		}
 
 	}
@@ -162,6 +163,7 @@ class QuestionCreate extends React.Component {
 	// DELETE 1 QUESTION FROM DB
 	removeRow(question_id, index, event){
 		let url = "/survey/api/questions/" + question_id + "/";
+		let self = this;
 		if( this.state.status == "new" ){ // for new add
 			let all_data = this.state.datas;
 			if( all_data.length > 1){
@@ -176,8 +178,13 @@ class QuestionCreate extends React.Component {
 			    let all_data = this.state.datas;
 				if( all_data.length > 1){
 					all_data.splice(index, 1);
-					this.setState({ datas: all_data});
+					this.setState({ datas: all_data, isNotification: 'delete'});
 				}
+				setTimeout(() => {
+          		self.setState({
+    				isNotification: ''
+          		});
+        	}, 5000);
 			})
 			  .catch(function (error) {
 			    console.log(error);
@@ -189,7 +196,7 @@ class QuestionCreate extends React.Component {
 	updateRow(question_id, index, event){
 		let url="";
 		let method="";
-
+		let self=this;
 		let all_data = this.state.datas;
 		let current_ques = all_data[index];
 		console.log("update row data", current_ques, "index", index);
@@ -215,6 +222,12 @@ class QuestionCreate extends React.Component {
 		})
 		.then(function (response) {
 		    console.log(response);
+		    self.setState({isNotification: 'update'});
+		    setTimeout(() => {
+          		self.setState({
+    				isNotification: ''
+          		});
+        	}, 5000);
 		})
 		  .catch(function (error) {
 		    console.log(error);
@@ -228,7 +241,7 @@ class QuestionCreate extends React.Component {
 		let method = 'POST';
 		let all_data = this.state.datas;
 		this.setState({ datas: all_data })
-		
+		let self = this;
 	    axios(
 	    {
 	      url: url,
@@ -240,7 +253,13 @@ class QuestionCreate extends React.Component {
           },
 	    })
 	    .then(function (response) {
-	      console.log(response.data);      
+	      console.log(response.data);
+	      self.setState({isNotification:'Save'})
+	      setTimeout(() => {
+          		self.setState({
+    				isNotification: ''
+          		});
+        	}, 5000);    
 	      
 	    })
 	    .catch(function (error) {
@@ -335,7 +354,7 @@ class QuestionCreate extends React.Component {
 	    	<div className="App">
 	        	{ this.displayRow() }
 	        	{ this.displayButton() }
-	        	
+	        	{ (this.state.isNotification) ? <SuccessNotification type={ this.state.isNotification} />:null }
 	      </div>
 	    );
   }

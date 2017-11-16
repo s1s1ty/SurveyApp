@@ -7,6 +7,7 @@ import QuestionCreate from './QuestionCreate';
 import PreviewQuestion from './PreviewQuestion';
 import NotFound from './NotFound';
 import ShareLinkPopup from './ShareLinkPopup';
+import SuccessNotification from './SuccessNotification';
 
 
 class App extends React.Component{
@@ -19,6 +20,7 @@ class App extends React.Component{
 					<Route path="/survey/home/question/:projectId" component={QuestionCreate} />
 					<Route path="/survey/home/preview-question/:projectId" component={PreviewQuestion} />
 					<Route path="/survey/home/share-link/" component={ShareLinkPopup} />
+					<Route path="/survey/home/notification/" component={SuccessNotification} />
 					<Route path="/survey/home/*" component={NotFound} />
 				</Switch>
 			</Router>

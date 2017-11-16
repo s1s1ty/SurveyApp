@@ -136,7 +136,28 @@ input[readonly]
     padding: 5px 30px 30px 30px;
     box-shadow: 1px 1px 1px 1px #dfdfdf;
 }
-
+.notification{
+	position: fixed;
+	text-transform: capitalize;
+    height: 80px;
+    width: 220px;
+    background: rgba(0, 100, 0, 0.78);
+    color: white;
+    font-weight: 700;
+    font-size: larger;
+    text-align: center;
+    padding-top: 25px;
+    right: 2%;
+    top: 10px;
+    animation: 0.3s 0.3s zoomIn both;
+    box-shadow: 1px 1px 1px 1px #dfdfdf;
+    transition: opacity 0.5s;
+  	opacity: 1;
+}
+.notification .hide{
+	opacity: 0;
+	pointer-events: none;
+}
 .update-button .hide{
 	display: none;
 }

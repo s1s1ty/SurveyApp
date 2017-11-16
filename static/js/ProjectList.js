@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import ShareLinkPopup from "./ShareLinkPopup";
+import SuccessNotification from "./SuccessNotification";
 
 
 class ProjectList extends React.Component{
@@ -12,6 +13,7 @@ class ProjectList extends React.Component{
 			data: [],
 			project_name: '',
 			isSharePopup: false,
+			isNotification: '',
 			project_id: ''
 		}
 		this.deleteProject = this.deleteProject.bind(this);
@@ -42,7 +44,13 @@ class ProjectList extends React.Component{
 		.then(function (results) {
       		let data = self.state.data; 
       		data.splice(index, 1);
-      		self.setState({ data: data });
+      		self.setState({ data: data, isNotification:'delete' });
+      		setTimeout(() => {
+          		self.setState({
+    				isNotification: ''
+          		});
+        	}, 5000);
+
     	})
     	.catch(function (error) {
       		console.log(error);
@@ -68,7 +76,12 @@ class ProjectList extends React.Component{
 		})
 		.then(function (results) {
       		let data = self.state.data; 
-      		self.setState({ data: data });
+      		self.setState({ data: data, isNotification: 'update' });
+      		setTimeout(() => {
+          		self.setState({
+    				isNotification: ''
+          		});
+        	}, 5000);
     	})
     	.catch(function (error) {
       		console.log(error);
@@ -133,6 +146,7 @@ class ProjectList extends React.Component{
 		        <h1>All Projects</h1>
 		        <div className="projects">{ pList } </div>
 		        {(this.state.isSharePopup) ? <ShareLinkPopup project_id={this.state.project_id} isActive={this.state.isSharePopup} onCancelAction={this.cancelPopup.bind(this)} /> : null } 
+	      		{( this.state.isNotification ) ? <SuccessNotification type={ this.state.isNotification } /> : null}
 	      	</div>
       )
 	}
