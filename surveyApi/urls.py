@@ -4,7 +4,7 @@ from . import exports
 
 urlpatterns = [
 	url(r'^home/', views.index, name='index'),
-	url(r'^pdf/(?P<pk>[0-9]+)/$', views.render_to_pdf, name="pdf"),
+	url(r'^export-question/pdf/(?P<pk>[0-9]+)/$', exports.export_question_pdf, name="export_question_pdf"),
 	url(r'^export-answer/xls/(?P<pk>[0-9]+)/$', exports.export_answer_xls, name="export_answer_xls"),
 
     url(r'^api/projects/$', views.ProjectList.as_view(), name='project_list'),

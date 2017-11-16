@@ -157,10 +157,10 @@ class PreviewQuestion extends React.Component{
 
 	// DISPLAY BUTTON
 	submitButton(){
-		let url = "/survey/pdf/"+ this.state.project_id+"/";
+		let url = "/survey/export-question/pdf/"+ this.state.project_id+"/";
 		return(
 			<div className="btn-group">
-	    		<a href={ url } className="btn btn-success">
+	    		<a href={ url } className="btn btn-success" target="_blank">
 	    			<span className="glyphicon glyphicon-save"></span> Download as PDF
     			</a>
 	    		<button className="btn btn-primary" onClick={ this.saveAnswer.bind(this) }>

@@ -39,6 +39,10 @@ class Question(models.Model):
 		data['project'] = data_dict.get('project')
 		return data
 
+	@property
+	def ans_option_list(self):
+		return self.answer_option.split(',')
+
 
 class Answer(models.Model):
 	answer_text = models.TextField()

@@ -1,8 +1,12 @@
 import csv
 import xlwt
+from xhtml2pdf import pisa 
 
-from django.http import HttpResponse
+from io import BytesIO
+
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import get_object_or_404
+from django.template.loader import get_template
 
 from .models import Project, Question, Answer
 
@@ -23,7 +27,7 @@ def export_answer_xls(request, pk):
 
 	project = get_object_or_404(Project, pk=pk)
 	questions = project.question_set.all()
-
+ 
 	columns = []
 	for ques in questions:
 		columns.append(ques.question_name)
@@ -48,5 +52,24 @@ def export_answer_xls(request, pk):
 	return response
 
 
+# DOWNLOAD QUESTION AS PDF FORMAT
+def export_question_pdf(request, pk):
+	try:
+		project = get_object_or_404(Project, pk=pk)
+	except Project.DoesNotExist:
+		return HttpResponse(status=404)
 
+	questions = project.question_set.all()
 
+	# start pdf generating 
+	template = get_template('surveyApi/pdf.html')
+	context = {
+		'data': questions,
+		'project_name': project.name
+	}
+	html = template.render(context)
+	result = BytesIO()
+	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf')
+	return None

@@ -95,21 +95,6 @@ class QuestionList(APIView):
             else:
                 return JsonResponse(serializer.errors, status=400)
 
-@csrf_exempt
-def project_related_question(request, project):
-    """
-    Retrieve a code snippet.
-    """
-    try:
-        snippet = Question.objects.filter(project=project)
-    except Project.DoesNotExist:
-        return HttpResponse(status=404)
-
-    # if request.method == 'GET':
-    serializer = QuestionSerializer(snippet, many=True)
-    return JsonResponse(serializer.data, safe=False)
-
-
 
 class QuestionDetail(APIView):
     """Delete or Update a question instance"""
@@ -158,23 +143,20 @@ class AnswerList(APIView):
                 return JsonResponse(serializer.errors, status=400)
 
 
-# class GeneratePdf(View):
-#     def get(self, request, *args, **kwargs):
-#         data = {
-#               'today': datetime.date.today(), 
-#               'amount': 39.99,
-#              'customer_name': 'Cooper Mann',
-#              'order_id': 1233434,
-#         }
-#         pdf = render_to_pdf('surveyApi/pdf.html', data)
-#         return HttpResponse(pdf, content_type='application/pdf')
-        
-def render_to_pdf(request,pk):
-    import pdfkit
-    # pdfkit.from_file('/surveyApi/pdf.html', 'out.pdf')
+@csrf_exempt
+def project_related_question(request, project):
+    """
+    Retrieve a code snippet.
+    """
+    try:
+        snippet = Question.objects.filter(project=project)
+    except Project.DoesNotExist:
+        return HttpResponse(status=404)
 
+    # if request.method == 'GET':
+    serializer = QuestionSerializer(snippet, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+    
 def index(request):
     return render(request, 'index.html', {})
-
-
-

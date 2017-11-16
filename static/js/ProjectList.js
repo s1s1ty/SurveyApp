@@ -116,7 +116,7 @@ class ProjectList extends React.Component{
 				            <span className="glyphicon glyphicon-share-alt"></span>
 				              	  
 		              		</button>
-		              		<a href="/survey/export-answer/xls/47/"
+		              		<a href={ "/survey/export-answer/xls/"+ project.id+"/" }
 				              	  title="Export Answer" 
 				              	  className="btn btn-primary">
 				            <span className="glyphicon glyphicon-download-alt"></span>
